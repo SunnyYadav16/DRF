@@ -2,14 +2,15 @@ from .models import CourseModel, InstructorModel
 from rest_framework import serializers
 
 
-class CourseSerializer(serializers.ModelSerializer):
+class CourseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CourseModel
         fields = '__all__'
 
 
-class InstructorSerializer(serializers.ModelSerializer):
-    courses = CourseSerializer(many=True, read_only=True)
+class InstructorSerializer(serializers.HyperlinkedModelSerializer):
+    courses = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='coursemodel-detail')
+
     class Meta:
         model = InstructorModel
         fields = '__all__'
